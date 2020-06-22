@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="CisternasBalhid">
+	<property name="appName"     value="CisternasBalhid"/>
+	<property name="mainClass"   value="br.edu.ufcg.lsd.seghidro.cisternas.view.CisternasBalhid"/>
+	<property name="classesDir"  value="classes/"/>
+	<property name="sourceDir"   value="src-java/"/>
+	<property name="testesDir"   value="src-testes/"/>
+	<property name="libDir"      value="lib"/>	
+	<property name="javadocDir"  value="doc"/>
+	<property name="jarFileDir"  value="dist"/>	
+	<property name="jarFileName" value="cisternasBalhid.jar"/>
+	<property name="classpath"   value="./${classesDir}"/>
+	
+	<property name="dirLibCisternas" value="../Cisternas/lib"/>
+		
+	<!-- TAG responsável por fazer a cópia do jar e jogar dentro da pasta lib 
+		do projeto MARBS -->
+	<target name="copyBalHid2Cisternas" >
+		<copy todir="${dirLibCisternas}" file="${jarFileDir}/${jarFileName}" />
+	</target>
+	
+	<!-- CLASSPATH -->
+	<path id="classpath">
+		<fileset dir="${libDir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="prepareBuild" description="Creates the build needed directories">
+	    <mkdir dir="${classesDir}"/>
+	</target>
+	
+	<target name="compile" depends="prepareBuild" description="Build all the package sources and puts the classes in the right place">
+		<javac classpath="${classpath}" 
+			srcdir="${sourceDir}" 
+			destdir="${classesDir}" 
+			debug="on" 
+			optimize="on" 
+			compiler="javac1.5">
+			<include name="**"/>
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+
+	<target name="clean" description="Cleans the envoronment from old builds (removes the .class files and the package .jar file on the top level dir)">
+		<delete dir="${classesDir}"/>
+		<delete file="${jarFileName}"/>
+	</target>
+
+	<target name="build">
+		<antcall target="clean"/>
+		<antcall target="compile"/>
+		<antcall target="makeJar"/>
+		<antcall target="copyBalHid2Cisternas"/>
+	</target>
+	
+	<target name="prepareJavaDoc" description="Creates the javadoc needed directories">
+		<mkdir dir="${javadocDir}"/>
+	</target>
+
+	<target name="doc" depends="prepareJavaDoc" description="Creates the javadoc for the entire package">
+		<javadoc author="true" destdir="${javadocDir}" packagenames="${appName}.*" sourcepath="${sourceDir}" use="true" version="true" windowtitle="JHidro"/>
+	</target>
+
+	<target name="makeJar" description="Creates a jar file for the package">
+		<mkdir dir="${jarFileDir}"/>
+		<jar destfile="${jarFileDir}/${jarFileName}">
+			<fileset dir="${classesDir}">
+				<include name="**/*.class"/>
+			</fileset>
+			<!-- Tornando o jar executável-->
+			<manifest>
+	            <attribute name="Main-Class" value="${mainClass}"/>
+	        </manifest>
+		</jar>
+	</target>
+
+</project>
