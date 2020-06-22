@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="build" name="Cisternas">
+	<property name="appName"     value="cisternas"/>
+	<property name="mainClass"   value="br.edu.ufcg.lsd.seghidro.cisternas.view.Cisternas"/>
+	<property name="classesDir"  value="classes/"/>
+	<property name="sourceDir"   value="src-java/"/>
+	<property name="testesDir"   value="src-testes/"/>
+	<property name="libDir"      value="lib"/>	
+	<property name="javadocDir"  value="doc"/>
+	<property name="jarFileDir"  value="dist"/>	
+	<property name="jarFileName" value="cisternas.jar"/>
+	<property name="classpath"   value="./${classesDir}"/>
+	
+	<!-- CLASSPATH -->
+	<path id="classpath">
+		<fileset dir="${libDir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="prepareBuild" description="Creates the build needed directories">
+	    <mkdir dir="${classesDir}"/>
+	</target>
+	
+	<target name="compile" depends="prepareBuild" description="Build all the package sources and puts the classes in the right place">
+		<javac classpath="${classpath}" 
+			srcdir="${sourceDir}" 
+			destdir="${classesDir}" 
+			debug="on" 
+			optimize="on" 
+			encoding="UTF-8" 
+			compiler="javac1.5">
+			<include name="**"/>
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+
+	<target name="clean" description="Cleans the envoronment from old builds (removes the .class files and the package .jar file on the top level dir)">
+		<delete dir="${classesDir}"/>
+		<delete file="${jarFileName}"/>
+	</target>
+
+	<target name="build">
+		<antcall target="clean"/>
+		<antcall target="compile"/>
+		<antcall target="makeJar"/>
+	</target>
+	
+	<target name="prepareJavaDoc" description="Creates the javadoc needed directories">
+		<mkdir dir="${javadocDir}"/>
+	</target>
+
+	<target name="doc" depends="prepareJavaDoc" description="Creates the javadoc for the entire package">
+		<javadoc author="true" destdir="${javadocDir}" packagenames="${appName}.*" sourcepath="${sourceDir}" use="true" version="true" windowtitle="JHidro"/>
+	</target>
+
+	<target name="makeJar" description="Creates a jar file for the package">
+		<mkdir dir="${jarFileDir}"/>
+		<jar destfile="${jarFileDir}/${jarFileName}">
+			<fileset dir="${classesDir}">
+				<include name="**/*.class"/>
+			</fileset>
+			<!-- Tornando o jar executável-->
+			<manifest>
+	            <attribute name="Main-Class" value="${mainClass}"/>
+				<!-- Dependências existentes na aplicação -->
+				<attribute name="Class-Path" value="cisternasBalhid.jar"/>
+	        </manifest>
+		</jar>
+	</target>
+
+</project>
