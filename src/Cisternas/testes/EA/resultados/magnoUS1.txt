@@ -1,0 +1,3 @@
+!Latitude;Longitude;Descricao;Acap;Capacidade;Dem;Perdas;VolumeInicial(%);Garantia(%);Deficit(%);DiasDeficitConsecutivos;DataInicioDosDiasDeficitConsecutivos
+
+-7.24;-36.32;Cisterna;40.6;16.0;[0,1, 0,1, 0,1, 0,1, 0,1, 0,1, 0,1, 0,1, 0,1, 0,1, 0,1, 0,1];0.75;75.0;30.66;69.34;218;1917-06-21 

@@ -1,0 +1,1 @@
+rodarCisternas 75.0 "normal" "testes\\01\\$pmh$.pmh" "testes\\01\\parametros.par"	"testes\\01\\pesoPeriodo.pes" "testes\\01\\savioSaida.txt" "testes\\01\\cenarios.cen"
